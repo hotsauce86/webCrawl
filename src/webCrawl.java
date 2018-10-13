@@ -15,22 +15,38 @@ import java.util.Iterator;
 public class webCrawl {
 
 
+    /*
+        This project is based on using json.simple to parse a JSON 'internet' file
 
+        The project is split into two sections
+        -a parser section to go through the JSON and add the elements to an ArrayList
+        -a crawler section that crawls through the objects in the list until all pages are explored
+     */
 
 
     @SuppressWarnings("unchecked")
     public static void main(String[] args){
 
 
-
+        //The stack is used to crawl through each page of a site
         Stack<String> webCrawler = new Stack<String>();
 
+        //these arrays track successfully loaded pages, pages seen, and pages that don't exist
         ArrayList<String> successPages = new ArrayList<>();
         ArrayList<String> skippedPages = new ArrayList<>();
         ArrayList<String> errorPages = new ArrayList<>();
 
+        //this array uses a class 'worthless' to store page addresses and a list
+        //of their links on the page
         ArrayList<worthless> webj = new ArrayList<>();
 
+
+        /*
+            TEST CASE
+
+            This section was used to test the crawler with example addresses and
+            list of addresses
+         */
 
         ArrayList<String> exampleList1 =  new ArrayList<>();
         exampleList1.add("http://foo.bar.com/p2");
@@ -59,17 +75,20 @@ public class webCrawl {
         worthless example4 = new worthless("http://foo.bar.com/p5", exampleList4);
         worthless example5 = new worthless("http://foo.bar.com/p6", exampleList5);
 
-
+        //checking if list is working
         for(int i =0; i <exampleList1.size(); i++){
             System.out.println(exampleList1.get(i));
         }
+        System.out.println("address "+example1.getAddress()+", links"+example1.getLinks().size());
 
-        System.out.println(example5.getAddress()+example5.getLinks().size());
+        //another test case
         for(int i = 0; i<example5.getLinks().size(); i++ ){
-            System.out.println(example1.getLinks().get(i));
+            System.out.println(example5.getLinks().get(i));
         }
+        System.out.println("address "+example5.getAddress()+", links"+example5.getLinks().size());
 
         /*
+        //test cases added to stack to test crawler
         webj.add(example1);
         webj.add(example2);
         webj.add(example3);
@@ -77,28 +96,35 @@ public class webCrawl {
         webj.add(example5);
         */
 
-        System.out.println(example5.getAddress()+example5.getLinks().size());
 
+
+        /*
+            JSON PARSER
+
+            this section uses json.simple and iterates through the JSON to collect the web information
+
+         */
         System.out.println("////////////////////////////////////////////////////////////////////////////////////////");
+        //creating a parser
         JSONParser parser = new JSONParser();
         try{
             //Object obj2 = parser.parse(new FileReader("C:\\Users\\tim\\IdeaProjects\\webCrawl\\resources\\JSONfile"));
+            //creating a object that contains the contents of the JSON file
             Object obj3 = parser.parse(new FileReader("resources/JSONfile.json"));
-
+            //converting the object into a usable JSONObject
             JSONObject obj4 = (JSONObject) obj3;
-
+            //checking size
             System.out.println("obj size:     "+ obj4.size());
-
+            //collecting the sites within pages
             JSONArray websites = (JSONArray) obj4.get("pages");
 
             System.out.println(websites);
-           // websites2.forEach(site -> parseEmployeeObject((JSONObject) site));
+
             System.out.println("current size:  "+ websites.size());
 
+            //checking what each page has
             for (int i=0; i < websites.size(); i++){
-
                 System.out.println(websites.get(i).toString());
-
             }
 
             System.out.println("////////////////////////////////////////////////////////////////////////////////////////");
@@ -120,18 +146,13 @@ public class webCrawl {
 
                 ArrayList<String> gettingTheLinks = new ArrayList<>();
                 for(int i1 = 0; i1 < thelinksforaddress.size(); i1++){
+                    /*
+                        HERE IS WHERE WE GET THE LINKS
+                     */
                     System.out.println(thelinksforaddress.get(i1).toString());
                     gettingTheLinks.add(thelinksforaddress.get(i1).toString());
                 }
                 System.out.println("array list size:  "+gettingTheLinks.size());
-                //Iterator j = thelinksforaddress.iterator();
-
-               //while(j.hasNext()){
-                    //JSONObject slide2 = (JSONObject) j.next();
-                    //String title2 = (String)slide2.get("links");
-                  //  System.out.println("hello");
-                //}
-
 
                 /*
                 HERE IS WHERE WE ADD THE JSON ELEMENTS TO THE LIST
@@ -141,11 +162,11 @@ public class webCrawl {
                 worthless someWorthless = new worthless(theAddress, gettingTheLinks);
                 webj.add(someWorthless);
 
-
                 System.out.println(webj.size()+"!!!!");
             }
 
             System.out.println("////////////////////////////////////////////////////////////////////////////////////////");
+            /*
             for(Iterator iterator = obj4.keySet().iterator(); iterator.hasNext();) {
                 String key = (String) iterator.next();
                 System.out.println(key);
@@ -153,9 +174,12 @@ public class webCrawl {
             }
 
             System.out.println(obj3.toString());
+            */
 
+            /*
+                json.simple likes to throw errors until you catch all the Exceptions
 
-
+             */
         }catch (ParseException e){
             e.printStackTrace();
             System.out.print(e.getMessage());
@@ -170,12 +194,7 @@ public class webCrawl {
         }
 
 
-
-
-
-
-
-        FileReader reader = null;
+        //FileReader reader = null;
 
         /*
         System.out.println("/////////////////////////////////////");
@@ -202,6 +221,9 @@ public class webCrawl {
         System.out.println("/////////////////////////////////////");
         */
 
+        /*
+            TESTING WHAT IS IN THE LIST BEFORE GOING IN THE STACK
+         */
         int checker =4;
         System.out.println("web j at 10: " +webj.get(checker).getAddress()+" " +webj.get(checker).getLinks().size());
         for(int i =0; i <webj.get(checker).getLinks().size(); i++){
@@ -209,19 +231,56 @@ public class webCrawl {
         }
 
         System.out.println("CURRENT WEBJ: " + webj.size());
+
+
+
+
+
+
+        /*
+            WEB CRAWLER
+
+            the webcrawler works by starting with the first webpage, taking the String of its address
+            and the Int location of that address. The String will be used to compare the current page
+            with the String of the link elements on the select page, and the judge whether the page
+            has already been added to the stack (that has yet to be seen), if it already has been successfully
+            views (successPages) and add it to skippedPages, if we determine that it's already in skippedPages
+            and just ignore it, or if it does not exist in the available addresses and therefore added
+            to errorPages
+         */
+
+        //first we initialize the components needed to get the crawler to work
+        
+        //holds the string value of the address given
         String currentPage ="";
+        //its position within the pages
         int currentPageint =0;
-        int MAX_CYCLE =8;
 
         //webCrawler.push("http://foo.bar.com/p1");
+        //we initialize the start of the stack with the first address
         webCrawler.push(webj.get(0).getAddress());
 
-        for(int cycle =0; cycle < MAX_CYCLE; cycle++){
+        /*
+            DISCLAIMER
+            While we could use a "while(webCrawler.size() != 0)" loop for the crawler,
+            I found it useful to debug by being able to control the number of steps the loop takes
+            and seeing what the progress is of each list and the stack.
+
+            for the example case, the max number of loops needed is 7, but we can use larger values
+            which would still end the loop once the webCrawler is empty
+
+         */
+        int MAX_CYCLE =7;
+        while(webCrawler.size() != 0){
+        //for(int cycle =0; cycle < MAX_CYCLE; cycle++){
 
             if(webCrawler.size() ==0){
                 break;
             }
 
+            /*
+                GETTING CURRENT PAGE
+             */
             currentPage = webCrawler.pop();
             webCrawler.push(currentPage);
             System.out.println("current page address: "+currentPage);
@@ -235,9 +294,11 @@ public class webCrawl {
                 }
 
             }
-
             System.out.println("current page location: "+currentPageint);
 
+            /*
+                GETTING ERROR PAGE
+             */
             if(!webj.get(currentPageint).getAddress().equals(currentPage) ){
             //if(webj.get(currentPageint).getAddress() != currentPage){
                 errorPages.add(currentPage);
@@ -245,6 +306,9 @@ public class webCrawl {
                 System.out.println("failed to find address");
                 continue;
             }
+            /*
+                GETTING SUCCESS PAGE
+             */
 
             successPages.add(webCrawler.pop());
 
@@ -252,9 +316,14 @@ public class webCrawl {
                 System.out.println("empty list");
             }
 
+            /*
+                CHECKING IF ADDRESS HAS BEEN SEEN
+             */
             for (int i =0; i < webj.get(currentPageint).getLinks().size(); i++){
                 boolean isSeen = false;
 
+
+                //checking the skipped list if the address has been already added
                 if(skippedPages.size() >0){
                     for(int k=0; k<skippedPages.size(); k++){
                         if(webj.get(currentPageint).getStringFromList(i).equals(skippedPages.get(k))){
@@ -269,6 +338,7 @@ public class webCrawl {
                     }
                 }
 
+                //if page has been successfully scene
                 for(int j = 0; j<successPages.size(); j++){
                     if(webj.get(currentPageint).getStringFromList(i).equals(successPages.get(j))){
                     //if(webj.get(currentPageint).getStringFromList(i) == successPages.get(j)){
@@ -277,6 +347,7 @@ public class webCrawl {
                         System.out.println("adding "+webj.get(currentPageint).getStringFromList(i)+" to stack");
                     }
                 }
+                //if the page has already been queued in the stack
                 for(int j = 0; j<webCrawler.size(); j++){
                     if(webj.get(currentPageint).getStringFromList(i).equals(webCrawler.get(j))){
                     //if(webj.get(currentPageint).getStringFromList(i) == webCrawler.get(j)){
@@ -285,44 +356,50 @@ public class webCrawl {
                         System.out.println("adding "+webj.get(currentPageint).getStringFromList(i)+" to skipped");
                     }
                 }
+                //if the address has not been visited yet and not yet added to the stack, we push it to the stack
                 if(isSeen == false){
                     webCrawler.push(webj.get(currentPageint).getStringFromList(i));
                     System.out.println("adding "+webj.get(currentPageint).getStringFromList(i)+" to stack");
                 }
             }
-
-
-
-
         }
+
+        /*
+            TESTING OUTPUTS
+
+            once we have looped through the whole stack, we print out the results
+         */
+        //if we are done, the crawl should be empty
         System.out.print("crawlStack: ");
         for(int i =0; i < webCrawler.size(); i++){
             System.out.print(webCrawler.get(i) + ", ");
         }
-
         System.out.println("");
-
+        //what pages were viewed successfully
         System.out.print("Success: ");
         for(int i =0; i < successPages.size(); i++){
             System.out.print(successPages.get(i) + ", ");
         }
-
         System.out.println("");
+        //pages that were already visited and skipped
         System.out.print("Skipped: ");
         for(int i =0; i < skippedPages.size(); i++){
             System.out.print(skippedPages.get(i) + ", ");
         }
         System.out.println("");
+        //pages that do not exit
         System.out.print("Error: ");
         for(int i =0; i < errorPages.size(); i++){
             System.out.print(errorPages.get(i) + ", ");
         }
-
+        //methods to return the lists
         getSuccessPages(successPages);
         getSkippedPages(skippedPages);
         getErrorPages(errorPages);
-
+        //end of main
     }
+
+    //return methods
     public static ArrayList getSuccessPages(ArrayList x){
         return x;
     }
@@ -332,20 +409,5 @@ public class webCrawl {
     private static ArrayList getErrorPages(ArrayList x){
         return x;
     }
-
-    private static void parseEmployeeObject(JSONObject employee)
-    {
-        //Get employee object within list
-        JSONObject employeeObject = (JSONObject) employee.get("pages");
-
-        //Get employee first name
-        String firstName = (String) employeeObject.get("address");
-        System.out.println(firstName);
-
-    }
-
-
-
-
 }
 
