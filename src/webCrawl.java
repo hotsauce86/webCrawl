@@ -250,7 +250,7 @@ public class webCrawl {
          */
 
         //first we initialize the components needed to get the crawler to work
-        
+
         //holds the string value of the address given
         String currentPage ="";
         //its position within the pages
@@ -268,6 +268,10 @@ public class webCrawl {
 
             for the example case, the max number of loops needed is 7, but we can use larger values
             which would still end the loop once the webCrawler is empty
+
+            Also to note, when running the test case, the '==' comparator works for evaluation.
+            However, once we use the JSON elements added to webj, they stop working. for
+            comparing the strings we need to use the '.equals()' method.
 
          */
         int MAX_CYCLE =7;
@@ -291,6 +295,7 @@ public class webCrawl {
                 //if(webj.get(i).getAddress() == currentPage){
                     currentPageint = i;
                     System.out.println("success");
+                    break;
                 }
 
             }
@@ -310,8 +315,11 @@ public class webCrawl {
                 GETTING SUCCESS PAGE
              */
 
+            //page was loaded successfully
+            //and popped from the stack
             successPages.add(webCrawler.pop());
 
+            //checking list if there are any links
             if(webj.get(currentPageint).getLinks().size() ==0){
                 System.out.println("empty list");
             }
@@ -338,13 +346,13 @@ public class webCrawl {
                     }
                 }
 
-                //if page has been successfully scene
+                //if page has been successfully seen
                 for(int j = 0; j<successPages.size(); j++){
                     if(webj.get(currentPageint).getStringFromList(i).equals(successPages.get(j))){
                     //if(webj.get(currentPageint).getStringFromList(i) == successPages.get(j)){
                         isSeen = true;
                         skippedPages.add(webj.get(currentPageint).getStringFromList(i));
-                        System.out.println("adding "+webj.get(currentPageint).getStringFromList(i)+" to stack");
+                        System.out.println("adding "+webj.get(currentPageint).getStringFromList(i)+" to skipped, already seen");
                     }
                 }
                 //if the page has already been queued in the stack
@@ -353,13 +361,13 @@ public class webCrawl {
                     //if(webj.get(currentPageint).getStringFromList(i) == webCrawler.get(j)){
                         isSeen =true;
                         skippedPages.add(webj.get(currentPageint).getStringFromList(i));
-                        System.out.println("adding "+webj.get(currentPageint).getStringFromList(i)+" to skipped");
+                        System.out.println("adding "+webj.get(currentPageint).getStringFromList(i)+" to skipped, already in the stack");
                     }
                 }
                 //if the address has not been visited yet and not yet added to the stack, we push it to the stack
                 if(isSeen == false){
                     webCrawler.push(webj.get(currentPageint).getStringFromList(i));
-                    System.out.println("adding "+webj.get(currentPageint).getStringFromList(i)+" to stack");
+                    System.out.println("pushing "+webj.get(currentPageint).getStringFromList(i)+" to stack");
                 }
             }
         }
