@@ -405,6 +405,11 @@ public class webCrawl {
         getSkippedPages(skippedPages);
         getErrorPages(errorPages);
         //end of main
+
+        int numberofsocks =9;
+        numberofsocks = numberofsocks/2;
+        System.out.println(numberofsocks);
+
     }
 
     //return methods
