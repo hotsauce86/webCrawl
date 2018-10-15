@@ -410,6 +410,31 @@ public class webCrawl {
         numberofsocks = numberofsocks/2;
         System.out.println(numberofsocks);
 
+        String s1 = "asbcsdsdf";
+        String s2 = "sdfbeljkdcfj";
+
+        String[] s1collect = s1.split("");
+        String[] s2collect = s2.split("");
+
+        boolean match =false;
+        for(String a : s1collect){
+            for(String b: s2collect){
+                if(a.equals(b)){
+                    match=true;
+                    System.out.println("match is true");
+                    break;
+                }
+            }
+            if(match==true){
+                break;
+            }
+
+        }
+        if(match==false){
+            System.out.println("match is false");
+        }
+
+
     }
 
     //return methods
