@@ -435,6 +435,30 @@ public class webCrawl {
         }
 
 
+
+
+        String countSpaceExample = "asdhfwer t asdljfno as doahedjkhnd ";
+
+
+        System.out.println(countSpace(countSpaceExample));
+    }
+
+
+    public static String countSpace(String x){
+
+        String y;
+        int spaceCounter =0;
+        String[] z = x.split("");
+
+        for(String temp : z){
+            if(temp.equals(" ")){
+                spaceCounter++;
+            }
+        }
+
+        y="spaces found in string: " + spaceCounter;
+
+        return y;
     }
 
     //return methods
