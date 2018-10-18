@@ -406,60 +406,12 @@ public class webCrawl {
         getErrorPages(errorPages);
         //end of main
 
-        int numberofsocks =9;
-        numberofsocks = numberofsocks/2;
-        System.out.println(numberofsocks);
 
-        String s1 = "asbcsdsdf";
-        String s2 = "sdfbeljkdcfj";
-
-        String[] s1collect = s1.split("");
-        String[] s2collect = s2.split("");
-
-        boolean match =false;
-        for(String a : s1collect){
-            for(String b: s2collect){
-                if(a.equals(b)){
-                    match=true;
-                    System.out.println("match is true");
-                    break;
-                }
-            }
-            if(match==true){
-                break;
-            }
-
-        }
-        if(match==false){
-            System.out.println("match is false");
-        }
-
-
-
-
-        String countSpaceExample = "asdhfwer t asdljfno as doahedjkhnd ";
-
-
-        System.out.println(countSpace(countSpaceExample));
     }
 
 
-    public static String countSpace(String x){
 
-        String y;
-        int spaceCounter =0;
-        String[] z = x.split("");
 
-        for(String temp : z){
-            if(temp.equals(" ")){
-                spaceCounter++;
-            }
-        }
-
-        y="spaces found in string: " + spaceCounter;
-
-        return y;
-    }
 
     //return methods
     public static ArrayList getSuccessPages(ArrayList x){
