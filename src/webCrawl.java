@@ -40,63 +40,7 @@ public class webCrawl {
         //of their links on the page
         ArrayList<worthless> webj = new ArrayList<>();
 
-
-        /*
-            TEST CASE
-
-            This section was used to test the crawler with example addresses and
-            list of addresses
-         */
-
-        ArrayList<String> exampleList1 =  new ArrayList<>();
-        exampleList1.add("http://foo.bar.com/p2");
-        exampleList1.add("http://foo.bar.com/p3");
-        exampleList1.add("http://foo.bar.com/p4");
-
-        ArrayList<String> exampleList2 =  new ArrayList<>();
-        exampleList2.add("http://foo.bar.com/p2");
-        exampleList2.add("http://foo.bar.com/p4");
-
-        ArrayList<String> exampleList3 =  new ArrayList<>();
-        exampleList3.add("http://foo.bar.com/p5");
-        exampleList3.add("http://foo.bar.com/p1");
-        exampleList3.add("http://foo.bar.com/p6");
-
-        ArrayList<String> exampleList4 =  new ArrayList<>();
-
-        ArrayList<String> exampleList5 =  new ArrayList<>();
-        exampleList5.add("http://foo.bar.com/p7");
-        exampleList5.add("http://foo.bar.com/p4");
-        exampleList5.add("http://foo.bar.com/p5");
-
-        worthless example1 = new worthless("http://foo.bar.com/p1", exampleList1);
-        worthless example2 = new worthless("http://foo.bar.com/p2", exampleList2);
-        worthless example3 = new worthless("http://foo.bar.com/p4", exampleList3);
-        worthless example4 = new worthless("http://foo.bar.com/p5", exampleList4);
-        worthless example5 = new worthless("http://foo.bar.com/p6", exampleList5);
-
-        //checking if list is working
-        for(int i =0; i <exampleList1.size(); i++){
-            System.out.println(exampleList1.get(i));
-        }
-        System.out.println("address "+example1.getAddress()+", links"+example1.getLinks().size());
-
-        //another test case
-        for(int i = 0; i<example5.getLinks().size(); i++ ){
-            System.out.println(example5.getLinks().get(i));
-        }
-        System.out.println("address "+example5.getAddress()+", links"+example5.getLinks().size());
-
-        /*
-        //test cases added to stack to test crawler
-        webj.add(example1);
-        webj.add(example2);
-        webj.add(example3);
-        webj.add(example4);
-        webj.add(example5);
-        */
-
-
+        
 
         /*
             JSON PARSER
@@ -166,15 +110,6 @@ public class webCrawl {
             }
 
             System.out.println("////////////////////////////////////////////////////////////////////////////////////////");
-            /*
-            for(Iterator iterator = obj4.keySet().iterator(); iterator.hasNext();) {
-                String key = (String) iterator.next();
-                System.out.println(key);
-                System.out.println("test     "+ obj4.get(key));
-            }
-
-            System.out.println(obj3.toString());
-            */
 
             /*
                 json.simple likes to throw errors until you catch all the Exceptions
@@ -194,32 +129,6 @@ public class webCrawl {
         }
 
 
-        //FileReader reader = null;
-
-        /*
-        System.out.println("/////////////////////////////////////");
-        try{
-            reader = new FileReader("resources/JSONfile.json");
-        }
-        catch (FileNotFoundException e){
-            e.printStackTrace();
-            System.out.print(e.getMessage());
-        }
-        finally {
-            try{
-                if(reader != null)
-                {
-                    reader.close();
-                }
-
-            }catch (IOException ex){
-                System.out.println(ex.getMessage());
-                ex.printStackTrace();
-            }
-
-        }
-        System.out.println("/////////////////////////////////////");
-        */
 
         /*
             TESTING WHAT IS IN THE LIST BEFORE GOING IN THE STACK
@@ -400,6 +309,9 @@ public class webCrawl {
         for(int i =0; i < errorPages.size(); i++){
             System.out.print(errorPages.get(i) + ", ");
         }
+
+
+
         //methods to return the lists
         getSuccessPages(successPages);
         getSkippedPages(skippedPages);
