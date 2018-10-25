@@ -43,7 +43,7 @@ public class webCrawl {
 
         webCrawlerForJson(webj2);
 
-        
+
 
 
     }
@@ -145,6 +145,15 @@ public class webCrawl {
 
         return  someWebj;
     }
+
+
+
+
+
+
+
+
+
 
 
     public static void webCrawlerForJson(ArrayList<Pages> webj){
@@ -317,6 +326,21 @@ public class webCrawl {
         for(int i =0; i < errorPages2.size(); i++){
             System.out.print(errorPages2.get(i) + ", ");
         }
+    }
+
+    public static String getCurrentPage(String x){
+
+        for(int i =0; i<webj.size(); i++){
+            System.out.println("checking "+ webj.get(i).getAddress() +" with " +currentPage);
+            if(webj.get(i).getAddress().equals(currentPage)){
+                //if(webj.get(i).getAddress() == currentPage){
+                currentPageint = i;
+                System.out.println("success");
+                break;
+            }
+
+        }
+        return x;
     }
 
 

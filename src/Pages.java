@@ -1,9 +1,12 @@
 import java.util.ArrayList;
+import java.awt.List;
 
 public class Pages {
 
     private String address;
     private ArrayList<String> links;
+
+    private List someints = new List();
 
     public Pages(String address, ArrayList<String> links){
         this.address = address;
