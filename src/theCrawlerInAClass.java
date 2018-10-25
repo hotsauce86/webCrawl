@@ -1,176 +1,19 @@
-import org.json.simple.JSONObject;
-import org.json.simple.JSONArray;
-import java.util.*;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import java.util.ArrayList;
+import java.util.Stack;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Iterator;
+public class theCrawlerInAClass extends webCrawl {
 
+    private ArrayList<Pages> webj;
 
-public class webCrawl {
-
-
-    /*
-        This project is based on using json.simple to parse a JSON 'internet' file
-
-        The project is split into two sections
-        -a parser section to go through the JSON and add the elements to an ArrayList
-        -a crawler section that crawls through the objects in the list until all pages are explored
-     */
-
-
-    @SuppressWarnings("unchecked")
-    public static void main(String[] args){
-
-
-        //The stack is used to crawl through each page of a site
-        Stack<String> webCrawler = new Stack<String>();
-
-        //these arrays track successfully loaded pages, pages seen, and pages that don't exist
-        ArrayList<String> successPages = new ArrayList<>();
-        ArrayList<String> skippedPages = new ArrayList<>();
-        ArrayList<String> errorPages = new ArrayList<>();
-
-        //this array uses a class 'worthless' to store page addresses and a list
-        //of their links on the page
-        ArrayList<worthless> webj = new ArrayList<>();
-        ArrayList<Pages> webj2 = new ArrayList<>();
-
-        GettingJSONParsed(webj2);
-
-        //webCrawlerForJson(webj2);
-
-
-        /*
-            USING theCrawlerInAClass
-
-            here we make an object of the class, and apply the same
-            webCrawlerForJson method below that is now also in the class
-            and send over the 'webj2' (it's version 2.0!) to the object
-         */
-
-        System.out.println("////////////////////////////////////////////////////////////////////////////////////////");
-        System.out.println("//////////////////////////the crawler class////////////////////////////////////////");
-        System.out.println("////////////////////////////////////////////////////////////////////////////////////////");
-         Object thisCrawler =   new theCrawlerInAClass(webj2);
-
-         ((theCrawlerInAClass) thisCrawler).webCrawlerForJson(webj2);
-        System.out.println("////////////////////////////////////////////////////////////////////////////////////////");
-        System.out.println("////////////////////////////////////////////////////////////////////////////////////////");
-        System.out.println("////////////////////////////////////////////////////////////////////////////////////////");
-
-
-
+    public theCrawlerInAClass(ArrayList<Pages> webj){
+        this.webj = webj;
     }
 
+    public ArrayList<Pages> setTheWebj(ArrayList<Pages> webj){
+        this.webj = webj;
 
-    public static ArrayList<Pages> GettingJSONParsed ( ArrayList<Pages> someWebj){
-        System.out.println("////////////////////////////////////////////////////////////////////////////////////////");
-        //creating a parser
-        JSONParser parser = new JSONParser();
-        try{
-
-            //creating a object that contains the contents of the JSON file
-            Object obj3 = parser.parse(new FileReader("resources/JSONfile.json"));
-            //converting the object into a usable JSONObject
-            JSONObject obj4 = (JSONObject) obj3;
-            //checking size
-            System.out.println("obj size:     "+ obj4.size());
-            //collecting the sites within pages
-            JSONArray websites = (JSONArray) obj4.get("pages");
-
-            System.out.println(websites);
-
-            System.out.println("current size:  "+ websites.size());
-
-            //checking what each page has
-            for (int i=0; i < websites.size(); i++){
-                System.out.println(websites.get(i).toString());
-            }
-
-            System.out.println("////////////////////////////////////////////////////////////////////////////////////////");
-
-            Iterator i = websites.iterator();
-            /*
-                HERE IS WHERE WE GET THE SITE ADDRESS
-             */
-            while(i.hasNext()){
-                JSONObject slide = (JSONObject) i.next();
-                String title = (String)slide.get("address");
-                System.out.println(title);
-                String theAddress = title;
-
-                JSONArray thelinksforaddress = (JSONArray) slide.get("links");
-                System.out.println("new size: "+ thelinksforaddress.size());
-                System.out.println(slide.get("links"));
-
-
-                ArrayList<String> gettingTheLinks = new ArrayList<>();
-                for(int i1 = 0; i1 < thelinksforaddress.size(); i1++){
-                    /*
-                        HERE IS WHERE WE GET THE LINKS
-                     */
-                    System.out.println(thelinksforaddress.get(i1).toString());
-                    gettingTheLinks.add(thelinksforaddress.get(i1).toString());
-                }
-                System.out.println("array list size:  "+gettingTheLinks.size());
-
-                /*
-                HERE IS WHERE WE ADD THE JSON ELEMENTS TO THE LIST
-                 */
-                System.out.println("CHECKING");
-                System.out.println(theAddress + "    " +gettingTheLinks.size());
-                Pages someWorthless = new Pages(theAddress, gettingTheLinks);
-                someWebj.add(someWorthless);
-
-                System.out.println(someWebj.size()+"!!!!");
-            }
-
-            System.out.println("////////////////////////////////////////////////////////////////////////////////////////");
-
-            /*
-                json.simple likes to throw errors until you catch all the Exceptions
-
-             */
-        }catch (ParseException e){
-            e.printStackTrace();
-            System.out.print(e.getMessage());
-        }
-        catch (FileNotFoundException e){
-            e.printStackTrace();
-            System.out.print(e.getMessage());
-        }
-        catch (IOException e){
-            e.printStackTrace();
-            System.out.print(e.getMessage());
-        }
-
-
-
-        /*
-            TESTING WHAT IS IN THE LIST BEFORE GOING IN THE STACK
-         */
-        int checker =4;
-        System.out.println("web j at 10: " +someWebj.get(checker).getAddress()+" " +someWebj.get(checker).getLinks().size());
-        for(int i =0; i <someWebj.get(checker).getLinks().size(); i++){
-            System.out.println(someWebj.get(checker).getAddressFromList(i));
-        }
-
-        System.out.println("CURRENT WEBJ: " + someWebj.size());
-
-        return  someWebj;
+        return webj;
     }
-
-
-
-
-
-
-
-
 
 
 
@@ -350,43 +193,9 @@ public class webCrawl {
         for(int i =0; i < errorPages2.size(); i++){
             System.out.print(errorPages2.get(i) + ", ");
         }
+
+        System.out.println("");
     }
 
 
-    /*
-            GET CURRENT PAGE
-            This method is used to find the location of the 'int' value of the
-            address in the webj object. However we can do this one better with
-            a '.compare', but that will be used later this is just for a test
-     */
-    public static Integer getCurrentPage(String currentPage, ArrayList<Pages> webj){
-
-        int currentPageInt=0;
-        for(int i =0; i<webj.size(); i++){
-            System.out.println("checking "+ webj.get(i).getAddress() +" with " +currentPage);
-            if(webj.get(i).getAddress().equals(currentPage)){
-                //if(webj.get(i).getAddress() == currentPage){
-                currentPageInt = i;
-                System.out.println("success");
-                break;
-            }
-        }
-        return currentPageInt;
-    }
-
-
-
-
-
-    //return methods
-    public static ArrayList getSuccessPages(ArrayList x){
-        return x;
-    }
-    private static ArrayList getSkippedPages(ArrayList x){
-        return x;
-    }
-    private static ArrayList getErrorPages(ArrayList x){
-        return x;
-    }
 }
-
