@@ -9,7 +9,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class classForJSONParser {
+public class classForJSONParser extends webCrawl{
+
+
+    private ArrayList<Pages> webj;
+
+    public classForJSONParser(ArrayList<Pages> webj){
+        this.webj = webj;
+    }
+
 
 
     public static ArrayList<Pages> GettingJSONParsed (ArrayList<Pages> someWebj){

@@ -52,8 +52,11 @@ public class webCrawl {
             and send over the 'webj2' (it's version 2.0!) to the object
          */
 
+        Object thisJSONParser = new classForJSONParser(webj2);
+        ((classForJSONParser)thisJSONParser).GettingJSONParsed(webj2);
+
         System.out.println("////////////////////////////////////////////////////////////////////////////////////////");
-        System.out.println("//////////////////////////the crawler class////////////////////////////////////////");
+        System.out.println("//////////////////////////the crawler class/////////////////////////////////////////////");
         System.out.println("////////////////////////////////////////////////////////////////////////////////////////");
          Object thisCrawler =   new theCrawlerInAClass(webj2);
 
