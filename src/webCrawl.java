@@ -16,9 +16,34 @@ public class webCrawl {
     /*
         This project is based on using json.simple to parse a JSON 'internet' file
 
-        The project is split into two sections
-        -a parser section to go through the JSON and add the elements to an ArrayList
-        -a crawler section that crawls through the objects in the list until all pages are explored
+        While this was initially built with most of the code in the main class,
+        this project is currently undergoing changes and evolving, breaking apart
+        the initial 'two' sections (1: The JSON Parser, 2: The Crawler). The sections
+        are now being broken apart into smaller methods and also being placed into
+        separate classes for easier management, and also because my Razer mouse dislikes
+        scrolling large documents.
+
+
+        The "classForJSONParser" was given a clever name for a good reason, it houses the method
+        used with json.simple to parse the JSON object. This class still needs to be modified to
+        handle "List" type instead on "ArrayList", but that will be for a future update
+
+
+        Likewise, "theCrawlerInAClass" it the web-crawler code... in a class. It should take the
+        object filled in with "classForJSONParser" and print out the results that we are looking
+        for. This one again will also need a future update to handle "List".
+
+
+        Future changes
+        -convert "ArrayList" items to "List"
+        -creat a "loop" method or a better search method for finding the current address in the crawl
+        stack with the other ArrayLists.
+        -remove old test code
+        -rename variables and classes that are more descriptive and better suited
+        -add better testing technology
+        -eat extremely hot hotsauce!
+
+
      */
 
 
@@ -39,7 +64,7 @@ public class webCrawl {
         ArrayList<worthless> webj = new ArrayList<>();
         ArrayList<Pages> webj2 = new ArrayList<>();
 
-        GettingJSONParsed(webj2);
+        //GettingJSONParsed(webj2);
 
         //webCrawlerForJson(webj2);
 
